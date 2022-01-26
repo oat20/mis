@@ -36,8 +36,8 @@
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             $server_output = curl_exec($ch);
-
             curl_close ($ch);
+            
             $server_output_array = json_decode($server_output, true);
             if($server_output_array['responseCode'] == '200'){
                 echo '<div class="alert alert-success mb-3">COMPLETE</div>';
