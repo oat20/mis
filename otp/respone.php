@@ -48,6 +48,7 @@ $muemail = explode('@', $_POST['muemail']);
             $server_output_array = json_decode($server_output, true);
             if($server_output_array['responseCode'] == '200'){
                 echo '<div class="alert alert-success mb-3">รหัส OTP ได้ส่งไปยังอีเมล <strong><em>'.$_POST['muemail'].'</em></strong></div>';
+                var_dump($server_output);
 
                 //send email
                 ini_set('SMTP','mumail.mahidol.ac.th');
