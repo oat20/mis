@@ -1,5 +1,7 @@
 <?php
 date_default_timezone_set('Asia/Bangkok');
+
+$muemail = explode('@', $_POST['muemail']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +25,8 @@ date_default_timezone_set('Asia/Bangkok');
         <?php
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
+            if($muemail[1] == 'mahidol.ac.th'){
+
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL,"https://doc.ph.mahidol.ac.th/phonebook/api/authen_withemail.php");
@@ -43,30 +47,37 @@ date_default_timezone_set('Asia/Bangkok');
             
             $server_output_array = json_decode($server_output, true);
             if($server_output_array['responseCode'] == '200'){
-                echo '<div class="alert alert-success mb-3">รหัสพนักงานได้ส่งไปยังอีเมล <strong><em>'.$_POST['muemail'].'</em></strong> ของคุณแล้ว</div>';
+                echo '<div class="alert alert-success mb-3">รหัส OTP ได้ส่งไปยังอีเมล <strong><em>'.$_POST['muemail'].'</em></strong></div>';
 
                 //send email
-                /*ini_set('SMTP','mumail.mahidol.ac.th');
+                ini_set('SMTP','mumail.mahidol.ac.th');
                 ini_set('smtp_port',25);
 
+                $otp = date('yhi');
+
                 $strTo = $_POST['muemail'];
-                $strSubject = "=?UTF-8?B?".base64_encode("รหัสพนักงานของคุณคือ ".base64_decode($server_output_array['responseData']['staffId']))."?=";
+                $strSubject = "=?UTF-8?B?".base64_encode("รหัส OTP ของคุณคือ ".$otp)."?=";
                 $strHeader = "MIME-Version: 1.0" . "\r\n";
                 $strHeader .= "Content-type: text/html; charset=utf-8"."\r\n"; 
-                $strHeader .= "From: ".strtoupper($_SERVER['HTTP_HOST'])."<noreply@".$_SERVER['HTTP_HOST'].">";
-                $strMessage = "<p><strong>รหัสพนักงาน</strong> ".base64_decode($server_output_array['responseData']['staffId'])."</p>
+                $strHeader .= "From: ".strtoupper($_SERVER['HTTP_HOST'])."<".$_SERVER['HTTP_HOST']."@".$_SERVER['HTTP_HOST'].">";
+                $strMessage = "<h1>Your OTP is ".$otp."</h1>
                     <p>".$server_output_array['responseData']['name']." ".$server_output_array['responseData']['surname']."</p>
                     <p><strong>ตำแหน่งาน</strong> ".$server_output_array['responseData']['job']['job']."</p>
                     <p><strong>ส่วนงาน</strong> ".$server_output_array['responseData']['office']['division']."</p>";
 
                 $flgSend = @mail($strTo,$strSubject,$strMessage,$strHeader);  // @ = No Show Error //
-                */
-
+                
             }else{
                 echo '<div class="alert alert-danger mb-3">ERROR</div>';
 
                 var_dump($server_output);
             }
+
+        }else{
+
+            echo '<div class="alert alert-danger">ERROR</div>';
+
+        }
 
         }else{
             echo '<div class="alert alert-danger">ERROR</div>';
